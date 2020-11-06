@@ -3,11 +3,9 @@ import dispatcher from "../appDispatcher";
 import actionTypes from "../actions/actionTypes";
 
 const CHANGE_EVENT = "change";
-let _posts = [];
-let _data = [];
 let _forecast = [];
 
-class PostStore extends EventEmitter {
+class ForecastStore extends EventEmitter {
     addChangeListener(callback) {
         this.on(CHANGE_EVENT, callback);
     }
@@ -20,32 +18,32 @@ class PostStore extends EventEmitter {
         this.emit(CHANGE_EVENT);
     }
 
-    getPosts() {
-        return _posts;
-    }
-
-    getData(){
-        return _data;
-    }
-
-    getForecast() {
+    getForecast(){
         return _forecast;
     }
 }
 
-const store = new PostStore();
+const store = new ForecastStore();
 
 dispatcher.register(async (action) => {
     switch (action.actionTypes) {
-        case actionTypes.GET_POSTS:
-            _posts = action.posts;
+        case actionTypes.GET_FORECAST_HORSENS:
+            if (action.data.ok) {
+                _forecast = await action.data.json();
+            }
             store.emitChange();
             break;
-        case actionTypes.GET_HORSENS:
-            if (action.data.ok && action.forecast.ok) {
-                _data = await action.data.json();
-                _forecast = await action.forecast.json();
-                console.log(_forecast);
+
+        case actionTypes.GET_FORECAST_AARHUS:
+            if (action.data.ok) {
+                _forecast = await action.data.json();
+            }
+            store.emitChange();
+            break;
+
+        case actionTypes.GET_FORECAST_CONPENHAGEN:
+            if (action.data.ok) {
+                _forecast = await action.data.json();
             }
             store.emitChange();
             break;

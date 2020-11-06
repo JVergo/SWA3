@@ -10,8 +10,11 @@ function NavBar() {
             <NavLink exact activeStyle={activeStyle} to="/">
                 Home
             </NavLink>
-            <NavLink activeStyle={activeStyle} to="/posts">
-                Posts
+            <NavLink activeStyle={activeStyle} to="/history">
+                History
+            </NavLink>
+            <NavLink activeStyle={activeStyle} to="/forecast">
+                Forecast
             </NavLink>
         </nav>
     );

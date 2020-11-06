@@ -2,7 +2,8 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import Home from "./pages/Home";
-import Posts from "./pages/Posts";
+import History from "./pages/History";
+import Forecast from "./pages/Forecast";
 import NotFound from "./pages/NotFound";
 import NavBar from "./components/common/NavBar";
 
@@ -12,7 +13,8 @@ function App() {
             <NavBar />
             <Switch>
                 <Route path="/" exact component={Home} />
-                <Route path="/posts" exact component={Posts} />
+                <Route path="/history" exact component={History} />
+                <Route path="/forecast" exact component={Forecast} />
                 <Route component={NotFound} />
             </Switch>
         </>

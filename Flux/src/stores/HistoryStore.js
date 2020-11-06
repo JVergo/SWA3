@@ -48,7 +48,6 @@ dispatcher.register(async (action) => {
             }
             store.emitChange();
             break;
-
             case actionTypes.GET_HISTORY_CONPENHAGEN:
             if (action.data.ok) {
                 _history = await action.data.json();

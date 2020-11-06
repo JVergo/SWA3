@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ForecastLists from "../components/ForecastList";
 import ForecastStore from "../stores/ForecastStore";
-import { getHorsens, getAarhus, getConpenhagen } from "../actions/forecastActions";
+import { getHorsens, getAarhus, getConpenhagen, filterForecast } from "../actions/forecastActions";
 
 import ForecastDateTime from "../components/DateTime";
 
@@ -42,6 +42,10 @@ function HistoryPage() {
         getConpenhagen();
     }
 
+    function HandleDates(dates){
+        filterForecast(dates);
+    }
+
     return (
         <div>
             <button onClick={Horsens}>Horsens</button>
@@ -49,7 +53,7 @@ function HistoryPage() {
             <button onClick={Conpenhagen}>Conpenhagen</button>
 
             <div>
-                <ForecastDateTime />
+                <ForecastDateTime HandleDates = {HandleDates}/>
             </div>
             <div className="card mt-4">
                 <ForecastLists forecast={forecast} place={place} />

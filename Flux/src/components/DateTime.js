@@ -16,7 +16,7 @@ function ForecastDateTime(props){
         var dateArray = new Array();
         var currentDate = startDate;
         while (currentDate <= stopDate) {
-            dateArray.push(new Date(currentDate));
+            dateArray.push(new Date(currentDate).toISOString());
             currentDate.setDate(currentDate.getDate() + 1);
         }
         return dateArray;
@@ -24,7 +24,7 @@ function ForecastDateTime(props){
 
     function onDateSubmit(e){
         let dates = getDates(new Date(fromDate), new Date(toDate));
-        props.HandelDates(dates);
+        props.HandleDates(dates);
     }
 
     return(

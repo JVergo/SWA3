@@ -53,7 +53,7 @@ function HistoryPage() {
             <button onClick={Conpenhagen}>Conpenhagen</button>
 
             <div>
-                <ForecastDateTime HandleDates = {HandleDates}/>
+                <ForecastDateTime HandleDates={HandleDates}/>
             </div>
             <div className="card mt-4">
                 <ForecastLists forecast={forecast} place={place} />

@@ -18,7 +18,7 @@ class HistoryStore extends EventEmitter {
         this.emit(CHANGE_EVENT);
     }
 
-    getHistory(){
+    getHistory() {
         return _history;
     }
 }
@@ -30,6 +30,7 @@ dispatcher.register(async (action) => {
         case actionTypes.GET_HISTORY_HORSENS:
             if (action.data.ok) {
                 _history = await action.data.json();
+                console.log(_history);
             }
             store.emitChange();
             break;
@@ -47,15 +48,13 @@ dispatcher.register(async (action) => {
             }
             store.emitChange();
             break;
-//Amahdya
-/*
-    case actionTypes.GET_FORECAST_DATES:
-        if (action.data.ok) {
-            _history = await action.data.json();
-        }
-        store.emitChange();
-        break;    
-        */
+
+        case actionTypes.GET_HISTORY_CONPENHAGEN:
+            if (action.data.ok) {
+                _history = await action.data.json();
+            }
+            store.emitChange();
+            break;
         default:
     }
 });

@@ -16,7 +16,7 @@ function ForecastDateTime(props){
         var dateArray = new Array();
         var currentDate = startDate;
         while (currentDate <= stopDate) {
-            dateArray.push(new Date (currentDate).toISOString());
+            dateArray.push(new Date(currentDate).toISOString());
             currentDate.setDate(currentDate.getDate() + 1);
         }
         return dateArray;

@@ -4,12 +4,13 @@ let place;
 let time;
 let value;
 let type = "Temperature";
+let unit = "C";
 
 function AddHistory(props) {
     place = props.place
 
 
-    function updateTime(e){
+    function updateTime(e) {
         time = e.target.value;
     }
 
@@ -19,12 +20,29 @@ function AddHistory(props) {
 
     function updateType(e) {
         type = e.target.value;
-        console.log(type);
+
+        switch (type) {
+            case "Temperature":
+                unit = "C";
+                break;
+            case "Precipitation":
+                unit = "MM";
+                break;
+            case "Wind speed":
+                unit = "m/s";
+                break;
+            case "Cloud coverage":
+                unit = "%";
+                break;
+            default:
+                break;
+        }
+        console.log(unit);
     }
 
 
     function Submit() {
-        
+
     }
 
     return (

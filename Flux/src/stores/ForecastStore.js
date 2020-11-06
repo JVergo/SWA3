@@ -44,15 +44,19 @@ dispatcher.register(async (action) => {
         case actionTypes.GET_FORECAST_CONPENHAGEN:
             if (action.data.ok) {
                 _forecast = await action.data.json();
+                console.log(_forecast.filter(x => action.time.includes(x.time)));
             }
             store.emitChange();
             break;
 
 //Amahdya
         case actionTypes.GET_FORECAST_DATES:
-            let temp = action.time.split("T")[0];
-                _forecast = _forecast.filter(x => action.time.includes(x.time));
-                console.log(action.time)
+            let dates = [];
+            action.time.forEach(t => {
+                dates.push(t.split("T")[0]);
+            });
+            _forecast = _forecast.filter(x => dates.includes(x.time.split("T")[0]));
+            console.log(_forecast);
             store.emitChange();
             break; 
         default:

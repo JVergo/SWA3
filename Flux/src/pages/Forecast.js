@@ -43,7 +43,6 @@ function HistoryPage() {
     }
 
     function HandleDates(dates){
-        //switch statement goes here
         switch(place) {
             case "Horsens":
                 getHorsens();

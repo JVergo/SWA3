@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import HistoryList from "../components/HistoryList";
+import AddHistory from "../components/AddHistroy";
 import HistoryStore from "../stores/HistoryStore";
 import { getHorsens, getAarhus, getConpenhagen } from "../actions/historyActions";
 
@@ -47,6 +48,7 @@ function HistoryPage() {
             <button onClick={Conpenhagen}>Conpenhagen</button>
 
             <div className="card mt-4">
+                <AddHistory place={place} />
                 <HistoryList history={history} place={place} />
             </div>
         </div>

@@ -3,6 +3,8 @@ import ForecastLists from "../components/ForecastList";
 import ForecastStore from "../stores/ForecastStore";
 import { getHorsens, getAarhus, getConpenhagen } from "../actions/forecastActions";
 
+import ForecastDateTime from "../components/DateTime";
+
 let place;
 
 function HistoryPage() {
@@ -46,6 +48,9 @@ function HistoryPage() {
             <button onClick={Aarhus}>Aarhus</button>
             <button onClick={Conpenhagen}>Conpenhagen</button>
 
+            <div>
+                <ForecastDateTime />
+            </div>
             <div className="card mt-4">
                 <ForecastLists forecast={forecast} place={place} />
             </div>

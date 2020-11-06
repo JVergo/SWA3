@@ -13,7 +13,8 @@ function ForecastLists(props) {
                                 <thead>
                                     <tr>
                                         <th>time</th>
-                                        <th>value</th>
+                                        <th>from</th>
+                                        <th>to</th>
                                         <th>unit</th>
                                         <th>type</th>
                                     </tr>
@@ -22,7 +23,8 @@ function ForecastLists(props) {
                                 <tbody>
                                     <tr>
                                         <td>{history.time}</td>
-                                        <td>{history.value}</td>
+                                        <td>{history.from}</td>
+                                        <td>{history.to}</td>
                                         <td>{history.unit}</td>
                                         <td>{history.type}</td>
                                     </tr>

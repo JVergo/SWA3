@@ -43,6 +43,19 @@ function HistoryPage() {
     }
 
     function HandleDates(dates){
+        //switch statement goes here
+        switch(place) {
+            case "Horsens":
+                getHorsens();
+                break;
+            case "Aarhus":
+                getAarhus();
+                break;
+            case "Copenhagen":
+                getConpenhagen();
+                break;
+            default:
+        }
         filterForecast(dates);
     }
 

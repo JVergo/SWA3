@@ -44,6 +44,7 @@ dispatcher.register(async (action) => {
         case actionTypes.GET_FORECAST_CONPENHAGEN:
             if (action.data.ok) {
                 _forecast = await action.data.json();
+                console.log(_forecast.filter(x => action.time.includes(x.time)));
             }
             store.emitChange();
             break;

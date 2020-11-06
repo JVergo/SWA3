@@ -47,6 +47,15 @@ dispatcher.register(async (action) => {
             }
             store.emitChange();
             break;
+//Amahdya
+/*
+    case actionTypes.GET_FORECAST_DATES:
+        if (action.data.ok) {
+            _history = await action.data.json();
+        }
+        store.emitChange();
+        break;    
+        */
         default:
     }
 });

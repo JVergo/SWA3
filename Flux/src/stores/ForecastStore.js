@@ -47,6 +47,14 @@ dispatcher.register(async (action) => {
             }
             store.emitChange();
             break;
+
+//Amahdya
+        case actionTypes.GET_FORECAST_DATES:
+            let temp = action.time.split("T")[0];
+                _forecast = _forecast.filter(x => action.time.includes(x.time));
+                console.log(action.time)
+            store.emitChange();
+            break; 
         default:
     }
 });

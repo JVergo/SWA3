@@ -1,32 +1,30 @@
 import React from "react";
 
-function ForecastDateTime(){
+function ForecastDateTime(props){
     let fromDate;
     let toDate;
 
     function onFromDateChange(e){
-        fromDate = e.value;
-        console.log(e);
+        fromDate = e.target.value;
     }
 
     function onToDateChange(e){
-        toDate = e.value;
+        toDate = e.target.value;
     }
 
     function getDates(startDate, stopDate) {
         var dateArray = new Array();
         var currentDate = startDate;
         while (currentDate <= stopDate) {
-            dateArray.push(new Date (currentDate));
-            currentDate = currentDate.addDays(1);
+            dateArray.push(new Date (currentDate).toISOString());
+            currentDate.setDate(currentDate.getDate() + 1);
         }
         return dateArray;
     }
 
     function onDateSubmit(e){
-        let dates = getDates(fromDate, toDate);
-        console.log(fromDate);
-        console.log(dates);
+        let dates = getDates(new Date(fromDate), new Date(toDate));
+        props.HandleDates(dates);
     }
 
     return(

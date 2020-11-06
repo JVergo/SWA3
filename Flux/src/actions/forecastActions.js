@@ -22,4 +22,11 @@ async function getConpenhagen() {
     });
 }
 
-export {getHorsens, getAarhus, getConpenhagen}
+function filterForecast(dates) {
+    dispatcher.dispatch({
+        actionTypes: actionTypes.GET_FORECAST_DATES, 
+        time : dates,
+    });
+}
+
+export {getHorsens, getAarhus, getConpenhagen, filterForecast}

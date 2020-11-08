@@ -1,9 +1,9 @@
 import React from "react";
 
-function ForecastDateTime(props) {
-    let fromDate;
-    let toDate;
+let fromDate;
+let toDate;
 
+function ForecastDateTime(props) {
     function onFromDateChange(e) {
         fromDate = e.target.value;
     }
@@ -15,18 +15,9 @@ function ForecastDateTime(props) {
     function getDates(startDate, stopDate) {
         var dateArray = new Array();
         var currentDate = startDate;
-        if (props.isHistroy) {
-            currentDate = stopDate;
-            while (currentDate <= startDate) {
-                dateArray.push(new Date(currentDate).toISOString());
-                currentDate.setDate(currentDate.getDate() + 1);
-            }
-        }
-        else {
-            while (currentDate <= stopDate) {
-                dateArray.push(new Date(currentDate).toISOString());
-                currentDate.setDate(currentDate.getDate() + 1);
-            }
+        while (currentDate <= stopDate) {
+            dateArray.push(new Date(currentDate).toISOString());
+            currentDate.setDate(currentDate.getDate() + 1);
         }
         return dateArray;
     }
@@ -40,9 +31,9 @@ function ForecastDateTime(props) {
         <div>
             <form>
                 <label>From Date:</label>
-                <input type="date" value={fromDate} onChange={onFromDateChange} />
+                <input type="date" onChange={onFromDateChange} />
                 <label>To Date:</label>
-                <input type="date" value={toDate} onChange={onToDateChange} />
+                <input type="date" onChange={onToDateChange} />
                 <input type="button" value="Submit" onClick={onDateSubmit} />
             </form>
         </div>

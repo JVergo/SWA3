@@ -8,12 +8,11 @@ import { getHorsens, getAarhus, getConpenhagen, filterHistory } from "../actions
 let place;
 
 function HistoryPage() {
-    const [history, setHistory] = useState(HistoryStore.getHistory());
+    const [history, setHistory] = useState(HistoryStore.getFilteredHistory());
 
     useEffect(() => {
         HistoryStore.addChangeListener(onChange);
-        if (HistoryStore.getHistory().length === 0)
-        {
+        if (HistoryStore.getFilteredHistory().length === 0) {
             place = "Horsens";
             getHorsens();
         }
@@ -21,7 +20,7 @@ function HistoryPage() {
     }, []);
 
     function onChange() {
-        setHistory(HistoryStore.getHistory());
+        setHistory(HistoryStore.getFilteredHistory());
     }
 
     function Horsens(e) {
@@ -35,7 +34,7 @@ function HistoryPage() {
         place = "Aarhus";
         getAarhus();
     }
-    
+
     function Conpenhagen(e) {
         e.preventDefault();
         place = "Conpenhagen";
@@ -43,19 +42,23 @@ function HistoryPage() {
     }
 
     function HandleDates(dates) {
-        switch(place) {
+        filterHistory(dates);
+    }
+
+    function UpdateData() {
+        switch (place) {
             case "Horsens":
                 getHorsens();
                 break;
             case "Aarhus":
                 getAarhus();
                 break;
-            case "Copenhagen":
+            case "Conpenhagen":
                 getConpenhagen();
                 break;
             default:
+                break;
         }
-        filterHistory(dates);
     }
 
     return (
@@ -69,7 +72,7 @@ function HistoryPage() {
                 <DateTime HandleDates={HandleDates} isHistroy={true} />
             </div>
             <div className="card mt-4">
-                <AddHistory place={place} />
+                <AddHistory place={place} UpdateData={UpdateData} />
                 <HistoryList history={history} place={place} />
             </div>
         </div>

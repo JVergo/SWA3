@@ -4,6 +4,7 @@ import actionTypes from "../actions/actionTypes";
 
 const CHANGE_EVENT = "change";
 let _history = [];
+let _filteredHistory = [];
 
 class HistoryStore extends EventEmitter {
     addChangeListener(callback) {
@@ -21,6 +22,10 @@ class HistoryStore extends EventEmitter {
     getHistory() {
         return _history;
     }
+
+    getFilteredHistory(){
+        return _filteredHistory;
+    }
 }
 
 const store = new HistoryStore();
@@ -30,6 +35,7 @@ dispatcher.register(async (action) => {
         case actionTypes.GET_HISTORY_HORSENS:
             if (action.data.ok) {
                 _history = await action.data.json();
+                _filteredHistory = _history;
             }
             store.emitChange();
             break;
@@ -37,6 +43,7 @@ dispatcher.register(async (action) => {
         case actionTypes.GET_HISTORY_AARHUS:
             if (action.data.ok) {
                 _history = await action.data.json();
+                _filteredHistory = _history;
             }
             store.emitChange();
             break;
@@ -44,6 +51,7 @@ dispatcher.register(async (action) => {
         case actionTypes.GET_HISTORY_CONPENHAGEN:
             if (action.data.ok) {
                 _history = await action.data.json();
+                _filteredHistory = _history;
             }
             store.emitChange();
             break;
@@ -59,8 +67,7 @@ dispatcher.register(async (action) => {
             action.time.forEach(t => {
                 dates.push(t.split("T")[0]);
             });
-            console.log(dates);
-            _history = _history.filter(x => dates.includes(x.time.split("T")[0]));
+            _filteredHistory = _history.filter(x => dates.includes(x.time.split("T")[0]));
             store.emitChange();
             break; 
         default:

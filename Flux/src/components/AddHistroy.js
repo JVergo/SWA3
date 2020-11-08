@@ -50,8 +50,8 @@ function AddHistory(props) {
             unit,
             value
         }
-        console.log(JSON.stringify(body))
         PostData(body);
+        props.UpdateData();
     }
 
     return (

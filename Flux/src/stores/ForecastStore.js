@@ -4,6 +4,7 @@ import actionTypes from "../actions/actionTypes";
 
 const CHANGE_EVENT = "change";
 let _forecast = [];
+let _filteredForecast = [];
 
 class ForecastStore extends EventEmitter {
     addChangeListener(callback) {
@@ -21,6 +22,9 @@ class ForecastStore extends EventEmitter {
     getForecast(){
         return _forecast;
     }
+    getFilteredForecast(){
+        return _filteredForecast;
+    }
 }
 
 const store = new ForecastStore();
@@ -30,6 +34,7 @@ dispatcher.register(async (action) => {
         case actionTypes.GET_FORECAST_HORSENS:
             if (action.data.ok) {
                 _forecast = await action.data.json();
+                _filteredForecast = _forecast;
             }
             store.emitChange();
             break;
@@ -37,6 +42,7 @@ dispatcher.register(async (action) => {
         case actionTypes.GET_FORECAST_AARHUS:
             if (action.data.ok) {
                 _forecast = await action.data.json();
+                _filteredForecast = _forecast;
             }
             store.emitChange();
             break;
@@ -44,7 +50,7 @@ dispatcher.register(async (action) => {
         case actionTypes.GET_FORECAST_CONPENHAGEN:
             if (action.data.ok) {
                 _forecast = await action.data.json();
-                console.log(_forecast.filter(x => action.time.includes(x.time)));
+                _filteredForecast = _forecast;
             }
             store.emitChange();
             break;
@@ -55,8 +61,7 @@ dispatcher.register(async (action) => {
             action.time.forEach(t => {
                 dates.push(t.split("T")[0]);
             });
-            _forecast = _forecast.filter(x => dates.includes(x.time.split("T")[0]));
-            console.log(_forecast);
+            _filteredForecast = _forecast.filter(x => dates.includes(x.time.split("T")[0]));
             store.emitChange();
             break; 
         default:

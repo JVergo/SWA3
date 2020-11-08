@@ -8,11 +8,11 @@ import ForecastDateTime from "../components/DateTime";
 let place;
 
 function HistoryPage() {
-    const [forecast, setForecast] = useState(ForecastStore.getForecast());
+    const [forecast, setForecast] = useState(ForecastStore.getFilteredForecast());
 
     useEffect(() => {
         ForecastStore.addChangeListener(onChange);
-        if (ForecastStore.getForecast().length === 0)
+        if (ForecastStore.getFilteredForecast().length === 0)
         {
             place = "Horsens";
             getHorsens();
@@ -21,7 +21,7 @@ function HistoryPage() {
     }, []);
 
     function onChange() {
-        setForecast(ForecastStore.getForecast());
+        setForecast(ForecastStore.getFilteredForecast());
     }
 
     function Horsens(e) {
@@ -43,18 +43,6 @@ function HistoryPage() {
     }
 
     function HandleDates(dates){
-        switch(place) {
-            case "Horsens":
-                getHorsens();
-                break;
-            case "Aarhus":
-                getAarhus();
-                break;
-            case "Copenhagen":
-                getConpenhagen();
-                break;
-            default:
-        }
         filterForecast(dates);
     }
 

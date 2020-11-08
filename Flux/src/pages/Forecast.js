@@ -42,7 +42,7 @@ function HistoryPage() {
         getConpenhagen();
     }
 
-    function HandleDates(dates){
+    function HandleDates(dates) {
         filterForecast(dates);
     }
 

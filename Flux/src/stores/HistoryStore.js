@@ -30,7 +30,7 @@ dispatcher.register(async (action) => {
         case actionTypes.GET_HISTORY_HORSENS:
             if (action.data.ok) {
                 _history = await action.data.json();
-                console.log(_history);
+                console.log(_history[0]);
             }
             store.emitChange();
             break;
@@ -49,10 +49,8 @@ dispatcher.register(async (action) => {
             store.emitChange();
             break;
 
-        case actionTypes.GET_HISTORY_CONPENHAGEN:
-            if (action.data.ok) {
-                _history = await action.data.json();
-            }
+        case actionTypes.POST_HISTORY:
+            console.log(action.response);
             store.emitChange();
             break;
         default:

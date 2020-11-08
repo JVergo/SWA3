@@ -1,14 +1,24 @@
 import dispatcher from "../appDispatcher";
 import actionTypes from "./actionTypes";
 
-async function PostData() {
+async function PostData(data) {
     dispatcher.dispatch({
         actionTypes: actionTypes.POST_HISTORY,
-        data: await fetch("http://localhost:8080/data/Horsens", {
-            method: 'POST',
-            body: JSON.stringify(data)
-        }),
+        response: await postData("http://localhost:8080/data", data)
     });
 }
 
-export {getHorsens, getAarhus, getConpenhagen}
+async function postData(url = '', data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+
+    return response;
+  }
+
+export {PostData}

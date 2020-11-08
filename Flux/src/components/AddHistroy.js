@@ -1,4 +1,5 @@
 import React from "react";
+import { PostData } from "../actions/postActions";
 
 let place;
 let time;
@@ -42,7 +43,15 @@ function AddHistory(props) {
 
 
     function Submit() {
-
+        let body = {
+            place,
+            time,
+            type,
+            unit,
+            value
+        }
+        console.log(JSON.stringify(body))
+        PostData(body);
     }
 
     return (

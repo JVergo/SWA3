@@ -13,7 +13,7 @@ function ForecastDateTime(props) {
     }
 
     function getDates(startDate, stopDate) {
-        var dateArray = new Array();
+        var dateArray = [];
         var currentDate = startDate;
         while (currentDate <= stopDate) {
             dateArray.push(new Date(currentDate).toISOString());

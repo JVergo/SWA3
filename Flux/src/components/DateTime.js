@@ -1,40 +1,49 @@
 import React from "react";
 
-function ForecastDateTime(props){
+function ForecastDateTime(props) {
     let fromDate;
     let toDate;
 
-    function onFromDateChange(e){
+    function onFromDateChange(e) {
         fromDate = e.target.value;
     }
 
-    function onToDateChange(e){
+    function onToDateChange(e) {
         toDate = e.target.value;
     }
 
     function getDates(startDate, stopDate) {
         var dateArray = new Array();
         var currentDate = startDate;
-        while (currentDate <= stopDate) {
-            dateArray.push(new Date(currentDate).toISOString());
-            currentDate.setDate(currentDate.getDate() + 1);
+        if (props.isHistroy) {
+            currentDate = stopDate;
+            while (currentDate <= startDate) {
+                dateArray.push(new Date(currentDate).toISOString());
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+        }
+        else {
+            while (currentDate <= stopDate) {
+                dateArray.push(new Date(currentDate).toISOString());
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
         }
         return dateArray;
     }
 
-    function onDateSubmit(e){
+    function onDateSubmit(e) {
         let dates = getDates(new Date(fromDate), new Date(toDate));
-        props.HandleDates(dates); //Error on History, might need HistoryDateTime(props)?
+        props.HandleDates(dates);
     }
 
-    return(
+    return (
         <div>
             <form>
                 <label>From Date:</label>
-                    <input type = "date" value = {fromDate} onChange = {onFromDateChange}/>
+                <input type="date" value={fromDate} onChange={onFromDateChange} />
                 <label>To Date:</label>
-                    <input type = "date" value = {toDate} onChange =  {onToDateChange}/>
-                <input type = "button" value = "Submit" onClick = {onDateSubmit} />
+                <input type="date" value={toDate} onChange={onToDateChange} />
+                <input type="button" value="Submit" onClick={onDateSubmit} />
             </form>
         </div>
     );

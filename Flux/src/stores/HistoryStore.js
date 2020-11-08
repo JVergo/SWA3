@@ -30,7 +30,6 @@ dispatcher.register(async (action) => {
         case actionTypes.GET_HISTORY_HORSENS:
             if (action.data.ok) {
                 _history = await action.data.json();
-                console.log(_history[0]);
             }
             store.emitChange();
             break;
@@ -60,8 +59,8 @@ dispatcher.register(async (action) => {
             action.time.forEach(t => {
                 dates.push(t.split("T")[0]);
             });
+            console.log(dates);
             _history = _history.filter(x => dates.includes(x.time.split("T")[0]));
-            console.log(_history);
             store.emitChange();
             break; 
         default:

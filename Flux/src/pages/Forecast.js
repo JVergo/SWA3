@@ -60,10 +60,11 @@ function HistoryPage() {
 
     return (
         <div>
-            <button onClick={Horsens}>Horsens</button>
-            <button onClick={Aarhus}>Aarhus</button>
-            <button onClick={Conpenhagen}>Conpenhagen</button>
-
+            <div>
+                <button onClick={Horsens}>Horsens</button>
+                <button onClick={Aarhus}>Aarhus</button>
+                <button onClick={Conpenhagen}>Conpenhagen</button>
+            </div>
             <div>
                 <ForecastDateTime HandleDates={HandleDates}/>
             </div>

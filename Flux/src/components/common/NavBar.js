@@ -16,9 +16,6 @@ function NavBar() {
             <NavLink activeStyle={activeStyle} to="/forecast">
                 Forecast
             </NavLink>
-            <NavLink activeStyle={activeStyle} to="/forecastDateTime">
-                Forecast Date Select
-            </NavLink>
         </nav>
     );
 }

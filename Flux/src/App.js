@@ -7,7 +7,7 @@ import Forecast from "./pages/Forecast";
 import NotFound from "./pages/NotFound";
 import NavBar from "./components/common/NavBar";
 
-import ForecastDateTime from "./components/DateTime";
+//import ForecastDateTime from "./components/DateTime";
 
 function App() {
     return (
@@ -17,7 +17,6 @@ function App() {
                 <Route path="/" exact component={Home} />
                 <Route path="/history" exact component={History} />
                 <Route path="/forecast" exact component={Forecast} />
-                <Route path="/forecastDateTime" exact component={ForecastDateTime} />
                 <Route component={NotFound} />
             </Switch>
         </>

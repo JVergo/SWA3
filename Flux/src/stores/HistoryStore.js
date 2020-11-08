@@ -53,6 +53,17 @@ dispatcher.register(async (action) => {
             console.log(action.response);
             store.emitChange();
             break;
+            
+//Amahdya
+        case actionTypes.GET_HISTORY_DATES:
+            let dates = [];
+            action.time.forEach(t => {
+                dates.push(t.split("T")[0]);
+            });
+            _history = _history.filter(x => dates.includes(x.time.split("T")[0]));
+            console.log(_history);
+            store.emitChange();
+            break; 
         default:
     }
 });

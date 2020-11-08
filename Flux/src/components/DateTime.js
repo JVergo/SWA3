@@ -24,7 +24,7 @@ function ForecastDateTime(props){
 
     function onDateSubmit(e){
         let dates = getDates(new Date(fromDate), new Date(toDate));
-        props.HandleDates(dates);
+        props.HandleDates(dates); //Error on History, might need HistoryDateTime(props)?
     }
 
     return(

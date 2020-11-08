@@ -3,7 +3,7 @@ import HistoryList from "../components/HistoryList";
 import AddHistory from "../components/AddHistroy";
 import DateTime from "../components/DateTime";
 import HistoryStore from "../stores/HistoryStore";
-import { getHorsens, getAarhus, getConpenhagen } from "../actions/historyActions";
+import { getHorsens, getAarhus, getConpenhagen, filterHistory } from "../actions/historyActions";
 
 let place;
 
@@ -42,18 +42,32 @@ function HistoryPage() {
         getConpenhagen();
     }
 
-    function HandelDates(dates) {
-        console.log(dates);
+    function HandleDates(dates) {
+        switch(place) {
+            case "Horsens":
+                getHorsens();
+                break;
+            case "Aarhus":
+                getAarhus();
+                break;
+            case "Copenhagen":
+                getConpenhagen();
+                break;
+            default:
+        }
+        filterHistory(dates);
     }
 
     return (
         <div>
-            <button onClick={Horsens}>Horsens</button>
-            <button onClick={Aarhus}>Aarhus</button>
-            <button onClick={Conpenhagen}>Conpenhagen</button>
-
-            <DateTime HandelDates={HandelDates} />
-
+            <div>
+                <button onClick={Horsens}>Horsens</button>
+                <button onClick={Aarhus}>Aarhus</button>
+                <button onClick={Conpenhagen}>Conpenhagen</button>
+            </div>
+            <div>
+                <DateTime HandelDates={HandleDates} />
+            </div>
             <div className="card mt-4">
                 <AddHistory place={place} />
                 <HistoryList history={history} place={place} />

@@ -1,0 +1,120 @@
+<!doctype html>
+<!-- ng-app determines that this is an application for angular-->
+<html ng-app="weatherApp">
+
+<head>
+    <link rel="stylesheet" href="index.css">
+    <title>
+        Weather Data App
+    </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.js"></script>
+    <!-- Importing weatherController-->
+    <script src="weather.js"></script>
+</head>
+
+<!-- The ng-controller directive allows us to choose a controller and instantiate is 
+using the keyword "as"
+NOTE: controllers can be generally considered as classes-->
+
+<body ng-controller="weatherController as weatherCtrl">
+    <h1>Input name:</h1>
+    <input type="text" ng-model="yourName" placeholder="Enter your name...">
+    <br>
+    <br>
+    <!-- {{ }} - this angular tag allows letting know angular
+        that you are using an angular template tag
+        NOTE: this is done automatically-->
+    <p>Hello {{yourName}}, please choose what weather data you would like to view, by clicking the below buttons</p>
+    <div>
+        <div>
+            <form ng-submit="weatherCtrl.getAllWeatherHistory()">
+                <input type="submit" value="Get all history" ng-model="submit">
+            </form>
+            <form ng-submit="weatherCtrl.getWeatherHistoryForPlace()">
+                <input type="submit" value="Get weather history for location" ng-model="submit">
+                <input type="text" ng-model="weatherCtrl.placeHistory" placeholder="Specify location...">
+            </form>
+            <form ng-submit="weatherCtrl.getWeatherHistoryDateInterval()">
+                <input type="submit" value="Get weather history for time period" ng-model="submit">
+                starting from:<input type="datetime-local" ng-model="weatherCtrl.fromDateHistory"
+                    placeholder="yyyy-MM-ddTHH:mm:ss" min="1000-01-01T00:00:00" max="3000-12-31T00:00:00" required />
+                up till: <input type="datetime-local" ng-model="weatherCtrl.toDateHistory"
+                    placeholder="yyyy-MM-ddTHH:mm:ss" min="1000-01-01T00:00:00" max="3000-12-31T00:00:00" required />
+            </form>
+        </div>
+        <div>
+            <form ng-submit="weatherCtrl.getAllWeatherForecast()">
+                <input type="submit" value="Get all forecast" ng-model="submit">
+            </form>
+            <form ng-submit="weatherCtrl.getWeatherForecastForPlace()">
+                <input type="submit" value="Get weather forecast for location" ng-model="submit">
+                <input type="text" ng-model="weatherCtrl.placeForecast" placeholder="Specify location...">
+            </form>
+            <form ng-submit="weatherCtrl.getWeatherForecastDateInterval()">
+                <input type="submit" value="Get weather forecast for time period" ng-model="submit">
+                starting from:<input type="datetime-local" ng-model="weatherCtrl.fromDateForecast"
+                    placeholder="yyyy-MM-ddTHH:mm:ss" min="1000-01-01T00:00:00" max="3000-12-31T00:00:00" required />
+                up till: <input type="datetime-local" ng-model="weatherCtrl.toDateForecast"
+                    placeholder="yyyy-MM-ddTHH:mm:ss" min="1000-01-01T00:00:00" max="3000-12-31T00:00:00" required />
+            </form>
+        </div>
+    </div>
+    <br>
+    Add historical data:
+    <form ng-submit="weatherCtrl.pushWeatherHistory()">
+        <input type="submit" value="Push weather history" ng-model="submit">
+        <input type="text" ng-model="weatherCtrl.place" placeholder="Specify place...">
+        <input type="text" ng-model="weatherCtrl.type" placeholder="Specify type...">
+        <input type="text" ng-model="weatherCtrl.specificType" placeholder="Specify specific type...">
+        <input type="text" ng-model="weatherCtrl.unit" placeholder="Specify unit...">
+        <input type="datetime-local" ng-model="weatherCtrl.time" placeholder="yyyy-MM-ddTHH:mm:ss"
+            min="1000-01-01T00:00:00" max="3000-12-31T00:00:00" required />
+        <input type="text" ng-model="weatherCtrl.value" placeholder="Specify value...">
+    </form>
+    <br>
+    Filter by <input type="text" ng-model="searchModel" placeholder="type, location, time... etc">
+    <br>
+    <!-- other available filters can be found here: https://docs.angularjs.org/api/ng/filter 
+        NOTE: multiple filters can be applied by using multiple "|" the pecedence of filter operators matters 
+        NOTE: resolving "$$hashKey" error of immutable objects in AngularJS ng-repeat using "track by"-->
+
+    <div>
+        <table>
+            <tr>
+                <td><b>LOCATION</b></td>
+                <td><b>TYPE</b></td>
+                <td><b>MEASURE</b></td>
+                <td><b>TIME</b></td>
+            </tr>
+            <tr
+                ng-repeat="item in weatherCtrl.historyList | filter: searchModel track by item.getUnit() + item.getType() + item.getTime() + item.getPlace()">
+                <td><b>{{item.getPlace()}}</b></td>
+                <td>{{item.getType() | lowercase}}</td>
+                <td>{{item.getValue()}}({{item.getUnit() | lowercase}})
+                    {{(item.getPrecipitationType() != null) ? item.getPrecipitationType() : ''}}{{(item.getDirection() != null) ? item.getDirection() : ''}}
+                </td>
+                <td><em>{{item.getTime() | date : "short" }}</em></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><b>LOCATION</b></td>
+                <td><b>TYPE</b></td>
+                <td><b>MEASURE</b></td>
+                <td><b>TIME</b></td>
+            </tr>
+            <tr
+                ng-repeat="item in weatherCtrl.forecastList | filter: searchModel track by item.getUnit() + item.getType() + item.getTime() + item.getPlace()">
+                <td><b>{{item.getPlace()}}</b></td>
+                <td>{{item.getType() | lowercase}}</td>
+                <td>{{item.getFrom()}}({{item.getUnit() | lowercase}}) to
+                    {{item.getTo()}}({{item.getUnit() | lowercase}})
+                    {{(item.getPrecipitationType() != null) ? item.getPrecipitationType() : ''}}{{(item.getDirections() != null) ? item.getDirections() : ''}}
+                </td>
+                <td><em>{{item.getTime() | date : "short" }}</em></td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "weatherdata",
+  "version": "1.0.0",
+  "description": "Weather data application for SWA course",
+  "main": "weather.js",
+  "dependencies": {
+    "rxjs": "^6.6.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "https://github.com/JVergo/SWA3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JVergo/SWA3.git"
+  },
+  "author": "Andrei Jonas Amahdya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JVergo/SWA3/issues"
+  },
+  "homepage": "https://github.com/JVergo/SWA3#readme"
+}

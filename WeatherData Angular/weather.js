@@ -95,7 +95,7 @@ class ImmutableTemperature extends ImmutableWeatherData {
                 this.to
             );
         }
-    };
+    }
 
     // (32°F − 32) × 5/9 = 0°C
     convertToC() {
@@ -120,7 +120,7 @@ class ImmutableTemperature extends ImmutableWeatherData {
                 this.to
             );
         }
-    };
+    }
 }
 
 class ImmutablePrecipitation extends ImmutableWeatherData {
@@ -166,7 +166,7 @@ class ImmutablePrecipitation extends ImmutableWeatherData {
                 this.to
             );
         }
-    };
+    }
 
     convertToMM() {
         if (this.unit == 'IN') {
@@ -192,7 +192,7 @@ class ImmutablePrecipitation extends ImmutableWeatherData {
                 this.to
             );
         }
-    };
+    }
 }
 
 class ImmutableWind extends ImmutableWeatherData {
@@ -241,7 +241,7 @@ class ImmutableWind extends ImmutableWeatherData {
                 this.to
             );
         }
-    };
+    }
 
     convertToMS() {
         if (this.unit == 'MPH') {
@@ -267,7 +267,7 @@ class ImmutableWind extends ImmutableWeatherData {
                 this.to
             );
         }
-    };
+    }
 }
 
 class ImmutableCloudCoverage extends ImmutableWeatherData {
@@ -300,22 +300,16 @@ class MyDateInterval {
         }
     }
 
-    getFrom() { return this.fromDate };
-    setPlace(newFromDate) { return new MyDateInterval(newFromDate, this.toDate) };
+    getFrom() { return this.fromDate }
+    setPlace(newFromDate) { return new MyDateInterval(newFromDate, this.toDate) }
 
-    getTo() { return this.toDate };
-    setPlace(newToDate) { return new MyDateInterval(this.fromDate, newToDate) };
+    getTo() { return this.toDate }
+    setPlace(newToDate) { return new MyDateInterval(this.fromDate, newToDate) }
 
     contains(cDate) {
         const cDate2 = new Date(cDate);
-        if (cDate2 >= this.fromDate && cDate2 <= this.toDate) {
-            return true;
-        }
-        else {
-            return false;
-        }
-
-    };
+        return (cDate2 >= this.fromDate && cDate2 <= this.toDate);
+    }
 }
 
 angular.module('weatherApp', [])
@@ -355,7 +349,7 @@ angular.module('weatherApp', [])
             $log.log('Instantiating "weatherHistoryFactory"...');
             let weatherHistoryService = {};
             //DONE
-            updateWeatherHistory = (jsonData, weatherHistoryArr) => {
+            let updateWeatherHistory = (jsonData, weatherHistoryArr) => {
                 // accessing the ng-model name and age and pushing them into the current list
                 let temp = null;
 
@@ -408,7 +402,7 @@ angular.module('weatherApp', [])
             weatherHistoryService.pushData = (data) => {
                 let jsonString = JSON.stringify(data);
 
-                $http.post('http://localhost:8080/data', JSON.stringify(data))
+                $http.post('http://localhost:8080/data', jsonString)
                     .then(
                         // SUCCESS
                         function (response) {
@@ -433,7 +427,7 @@ angular.module('weatherApp', [])
                         // SUCCESS
                         function (response) {
                             let objList = response.data;
-                            objList.forEach(function (item) { this.updateWeatherHistory(item, weatherHistoryListView); });
+                            objList.forEach(function (item) { updateWeatherHistory(item, weatherHistoryListView); });
                         },
                         // FAILURE
                         function () {
@@ -450,7 +444,7 @@ angular.module('weatherApp', [])
                         // SUCCESS
                         function (response) {
                             let objList = response.data;
-                            objList.forEach(function (item) { this.updateWeatherHistory(item, weatherHistoryListView); });
+                            objList.forEach(function (item) { updateWeatherHistory(item, weatherHistoryListView); });
                         },
                         // FAILURE
                         function (response) {
@@ -480,7 +474,7 @@ angular.module('weatherApp', [])
                             objList.forEach(function (item) {
                                 if (new Date(item.time).getTime() >= myDateInterval.getFrom().getTime()
                                     && new Date(item.time).getTime() <= myDateInterval.getTo().getTime())
-                                    this.updateWeatherHistory(item, weatherHistoryListView);
+                                    updateWeatherHistory(item, weatherHistoryListView);
                             });
                         },
                         // FAILURE
@@ -516,8 +510,8 @@ angular.module('weatherApp', [])
                     helperFunctionsFactory.myMap(immutableWeatherDataArr, (w) => {
                         if (w.type == 'MS' || w.type == 'MPH')
                             w.convertToMPH();
-                        else if (w.type == '%')
-                            w
+                        // else if (w.type == '%')
+                        //     w
                         else if (w.type == 'MM' || w.type == 'IN')
                             w.convertToInches();
                         else if (w.type == 'CELSIUS' || w.type == 'FAHRENHEIT')
@@ -531,8 +525,8 @@ angular.module('weatherApp', [])
                     helperFunctionsFactory.myMap(immutableWeatherDataArr, (w) => {
                         if (w.type == 'MS' || w.type == 'MPH')
                             w.convertToMS();
-                        else if (w.type == '%')
-                            w
+                        // else if (w.type == '%')
+                        //     w
                         else if (w.type == 'MM' || w.type == 'IN')
                             w.convertToMM();
                         else if (w.type == 'CELSIUS' || w.type == 'FAHRENHEIT')
@@ -548,9 +542,7 @@ angular.module('weatherApp', [])
                     w.unit == "MS" || w.unit == "MPH")
                     ? w : null
                 ).forEach(filteredElement => {
-                    if (typeof min == 'undefined')
-                        min = filteredElement.value;
-                    else if (filteredElement.value <= min)
+                    if (typeof min == 'undefined' || filteredElement.value <= min)
                         min = filteredElement.value;
                 })
 
@@ -564,9 +556,7 @@ angular.module('weatherApp', [])
                     w.unit == "MM" || w.unit == "IN")
                     ? w : null
                 ).forEach(filteredElement => {
-                    if (typeof min == 'undefined')
-                        min = filteredElement.value;
-                    else if (filteredElement.value <= min)
+                    if (typeof min == 'undefined' || filteredElement.value <= min)
                         min = filteredElement.value;
                 })
 
@@ -580,9 +570,7 @@ angular.module('weatherApp', [])
                     w.unit == "FAHRENHEIT" || w.unit == "CELSIUS")
                     ? w : null
                 ).forEach(filteredElement => {
-                    if (typeof min == 'undefined')
-                        min = filteredElement.value;
-                    else if (filteredElement.value <= min)
+                    if (typeof min == 'undefined' || filteredElement.value <= min)
                         min = filteredElement.value;
                 })
 
@@ -596,9 +584,7 @@ angular.module('weatherApp', [])
                     w.unit == "\%")
                     ? w : null
                 ).forEach(filteredElement => {
-                    if (typeof min == 'undefined')
-                        min = filteredElement.value;
-                    else if (filteredElement.value <= min)
+                    if (typeof min == 'undefined' || filteredElement.value <= min)
                         min = filteredElement.value;
                 })
 
@@ -612,9 +598,7 @@ angular.module('weatherApp', [])
                     w.unit == "MS" || w.unit == "MPH")
                     ? w : null
                 ).forEach(filteredElement => {
-                    if (typeof windData == 'undefined')
-                        windData = filteredElement;
-                    else if (filteredElement.getTime() < windData.getTime())
+                    if (typeof windData == 'undefined' && filteredElement.getTime() < windData.getTime())
                         windData = filteredElement;
                 })
 
@@ -628,9 +612,7 @@ angular.module('weatherApp', [])
                     w.unit == "MM" || w.unit == "IN")
                     ? w : null
                 ).forEach(filteredElement => {
-                    if (typeof precipitationData == 'undefined')
-                        precipitationData = filteredElement;
-                    else if (filteredElement.getTime() < precipitationData.getTime())
+                    if (typeof precipitationData == 'undefined' && filteredElement.getTime() < precipitationData.getTime())
                         precipitationData = filteredElement;
                 })
 
@@ -644,9 +626,7 @@ angular.module('weatherApp', [])
                     w.unit == "FAHRENHEIT" || w.unit == "CELSIUS")
                     ? w : null
                 ).forEach(filteredElement => {
-                    if (typeof temperatureData == 'undefined')
-                        temperatureData = filteredElement;
-                    else if (filteredElement.getTime() < temperatureData.getTime())
+                    if (typeof temperatureData == 'undefined' && filteredElement.getTime() < temperatureData.getTime())
                         temperatureData = filteredElement;
                 })
 
@@ -663,9 +643,7 @@ angular.module('weatherApp', [])
                 )
                     // CALLING FOR EACH ON THE FILTERED ARRAY
                     .forEach(filteredElement => {
-                        if (typeof cloudCoverageData == 'undefined')
-                            cloudCoverageData = filteredElement;
-                        else if (filteredElement.getTime() < cloudCoverageData.getTime())
+                        if (typeof cloudCoverageData == 'undefined' && filteredElement.getTime() < cloudCoverageData.getTime())
                             cloudCoverageData = filteredElement;
                     })
 
@@ -682,7 +660,7 @@ angular.module('weatherApp', [])
             let weatherForecastService = {};
 
             // DONE
-            updateWeatherForecast = (jsonData, weatherForecastArr) => {
+            let updateWeatherForecast = (jsonData, weatherForecastArr) => {
                 // accessing the ng-model name and age and pushing them into the current list
                 let temp = null;
 
@@ -741,7 +719,7 @@ angular.module('weatherApp', [])
                         // SUCCESS
                         function (response) {
                             let objList = response.data;
-                            objList.forEach(function (item) { this.updateWeatherForecast(item, weatherForecastListView); });
+                            objList.forEach(function (item) { updateWeatherForecast(item, weatherForecastListView); });
                         },
                         // FAILURE
                         function () {
@@ -765,7 +743,7 @@ angular.module('weatherApp', [])
                         // SUCCESS
                         function (response) {
                             let objList = response.data;
-                            objList.forEach(function (item) { this.updateWeatherForecast(item, weatherForecastListView); });
+                            objList.forEach(function (item) { updateWeatherForecast(item, weatherForecastListView); });
                         },
                         // FAILURE
                         function (response) {
@@ -789,7 +767,7 @@ angular.module('weatherApp', [])
                             objList.forEach(function (item) {
                                 if (new Date(item.time).getTime() >= myDateInterval.getFrom().getTime()
                                     && new Date(item.time).getTime() <= myDateInterval.getTo().getTime())
-                                    this.updateWeatherForecast(item, weatherForecastListView);
+                                    updateWeatherForecast(item, weatherForecastListView);
                             });
                         },
                         // FAILURE
@@ -803,7 +781,7 @@ angular.module('weatherApp', [])
                 const convertedArray = this.weatherPrediction.map((obj, p) => {
                     switch (p) {
                         case "CELSIUS":
-                            obj.convertToFahrenheit  // how to access this method?
+                            obj.convertToFahrenheit();  // how to access this method?
                             break;
                         case "MM":
                             break;
@@ -887,7 +865,6 @@ angular.module('weatherApp', [])
 
                 weatherCtrl.whFactory.pushData({ place, type, precipitation_type, direction, unit, time, value });
             }
-
         }]);
 
 

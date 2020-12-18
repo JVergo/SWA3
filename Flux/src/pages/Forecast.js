@@ -10,6 +10,9 @@ let place;
 function HistoryPage() {
     const [forecast, setForecast] = useState(ForecastStore.getFilteredForecast());
 
+    /**
+     * Adds the event listener to the store, that adds the onChange
+     */
     useEffect(() => {
         ForecastStore.addChangeListener(onChange);
         if (ForecastStore.getFilteredForecast().length === 0)

@@ -15,6 +15,10 @@ class ForecastStore extends EventEmitter {
         this.removeListener(CHANGE_EVENT, callback);
     }
 
+    /**
+     * Triggers the change listener which trigger the "onChange",
+     * which is defined separetelly for each page  
+     */
     emitChange() {
         this.emit(CHANGE_EVENT);
     }

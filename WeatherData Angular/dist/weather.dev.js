@@ -257,7 +257,7 @@ function (_ImmutableWeatherData2) {
     key: "convertToInches",
     value: function convertToInches() {
       if (this.unit == 'MM') {
-        return new ImmutablePrecipitation(this.precipitation_type, this.value != null ? this.value / 25.4 : null, 'IN', this.type, this.place, this.time, this.from != null ? this.from / 25.4 : null, this.to != null ? this.to / 25.4 : null);
+        return new ImmutablePrecipitation(this.precipitation_type, this.value != null ? this.value / 0.0393701 : null, 'IN', this.type, this.place, this.time, this.from != null ? this.from / 0.0393701 : null, this.to != null ? this.to / 0.0393701 : null);
       } else if (this.unit == 'IN') {
         return new ImmutablePrecipitation(this.precipitation_type, this.value, this.unit, this.type, this.place, this.time, this.from, this.to);
       }
@@ -266,7 +266,7 @@ function (_ImmutableWeatherData2) {
     key: "convertToMM",
     value: function convertToMM() {
       if (this.unit == 'IN') {
-        return new ImmutablePrecipitation(this.precipitation_type, this.value != null ? this.value * 0.0393701 : null, 'MM', this.type, this.place, this.time, this.from != null ? this.from * 0.0393701 : null, this.to != null ? this.to * 0.0393701 : null);
+        return new ImmutablePrecipitation(this.precipitation_type, this.value != null ? this.value / 0.0393701 : null, 'MM', this.type, this.place, this.time, this.from != null ? this.from / 0.0393701 : null, this.to != null ? this.to / 0.0393701 : null);
       } else if (this.unit == 'MM') {
         return new ImmutablePrecipitation(this.precipitation_type, this.value, this.unit, this.type, this.place, this.time, this.from, this.to);
       }
@@ -582,17 +582,17 @@ angular.module('weatherApp', []).factory('helperFunctionsFactory', ['$log', func
 
   weatherHistoryService.convertToUSUnits = function (immutableWeatherDataArr) {
     return new ImmutableWeatherHistory(helperFunctionsFactory.myMap(immutableWeatherDataArr, function (w) {
-      if (w.type == 'MS' || w.type == 'MPH') w.convertToMPH(); // else if (w.type == '%')
-      //     w
-      else if (w.type == 'MM' || w.type == 'IN') w.convertToInches();else if (w.type == 'CELSIUS' || w.type == 'FAHRENHEIT') w.convertToF();
+      if (w.unit == 'MS' || w.unit == 'MPH') return w.convertToMPH(); // else if (w.type == '%')
+      //     w;
+      else if (w.unit == 'MM' || w.unit == 'IN') return w.convertToInches();else if (w.unit == 'CELSIUS' || w.unit == 'FAHRENHEIT') return w.convertToF();else return w;
     }));
   };
 
   weatherHistoryService.convertToInternationalUnits = function (immutableWeatherDataArr) {
     return new ImmutableWeatherHistory(helperFunctionsFactory.myMap(immutableWeatherDataArr, function (w) {
-      if (w.type == 'MS' || w.type == 'MPH') w.convertToMS(); // else if (w.type == '%')
-      //     w
-      else if (w.type == 'MM' || w.type == 'IN') w.convertToMM();else if (w.type == 'CELSIUS' || w.type == 'FAHRENHEIT') w.convertToC();
+      if (w.unit == 'MS' || w.unit == 'MPH') return w.convertToMS(); // else if (w.unit == '%')
+      //     return w
+      else if (w.unit == 'MM' || w.unit == 'IN') return w.convertToMM();else if (w.unit == 'CELSIUS' || w.unit == 'FAHRENHEIT') return w.convertToC();else return w;
     }));
   };
 
@@ -641,7 +641,7 @@ angular.module('weatherApp', []).factory('helperFunctionsFactory', ['$log', func
     helperFunctionsFactory.myFilter(immutableWeatherDataArr, function (w) {
       return w.unit == "MS" || w.unit == "MPH" ? w : null;
     }).forEach(function (filteredElement) {
-      if (typeof windData == 'undefined' && filteredElement.getTime() < windData.getTime()) windData = filteredElement;
+      if (typeof windData == 'undefined' || filteredElement.getTime() < windData.getTime()) windData = filteredElement;
     });
     return windData;
   };
@@ -651,7 +651,7 @@ angular.module('weatherApp', []).factory('helperFunctionsFactory', ['$log', func
     helperFunctionsFactory.myFilter(immutableWeatherDataArr, function (w) {
       return w.unit == "MM" || w.unit == "IN" ? w : null;
     }).forEach(function (filteredElement) {
-      if (typeof precipitationData == 'undefined' && filteredElement.getTime() < precipitationData.getTime()) precipitationData = filteredElement;
+      if (typeof precipitationData == 'undefined' || filteredElement.getTime() < precipitationData.getTime()) precipitationData = filteredElement;
     });
     return precipitationData;
   };
@@ -661,7 +661,7 @@ angular.module('weatherApp', []).factory('helperFunctionsFactory', ['$log', func
     helperFunctionsFactory.myFilter(immutableWeatherDataArr, function (w) {
       return w.unit == "FAHRENHEIT" || w.unit == "CELSIUS" ? w : null;
     }).forEach(function (filteredElement) {
-      if (typeof temperatureData == 'undefined' && filteredElement.getTime() < temperatureData.getTime()) temperatureData = filteredElement;
+      if (typeof temperatureData == 'undefined' || filteredElement.getTime() < temperatureData.getTime()) temperatureData = filteredElement;
     });
     return temperatureData;
   };
@@ -673,7 +673,7 @@ angular.module('weatherApp', []).factory('helperFunctionsFactory', ['$log', func
       return w.unit == "\%" ? w : null;
     }) // CALLING FOR EACH ON THE FILTERED ARRAY
     .forEach(function (filteredElement) {
-      if (typeof cloudCoverageData == 'undefined' && filteredElement.getTime() < cloudCoverageData.getTime()) cloudCoverageData = filteredElement;
+      if (typeof cloudCoverageData == 'undefined' || filteredElement.getTime() < cloudCoverageData.getTime()) cloudCoverageData = filteredElement;
     });
     return cloudCoverageData;
   };
@@ -866,28 +866,7 @@ angular.module('weatherApp', []).factory('helperFunctionsFactory', ['$log', func
       value: value
     });
   };
-}]); //////// IMPORTANT MODEL CONVENTIONS
-//////// WIND
-// Type: wind speed
-// Unit: MS MPH
-// Value:
-//////// Could Coverage
-// Type: cloud coverage
-// Unit: %
-// Value:
-//      0%  - 33 % = CLEAR
-//      34% - 66 % = PARTLY CLOUDY
-//      67% - 100% = CLOUDY
-//////// PRECIPITATION
-// Type: precipitation
-// Precipitation Type: RAIN SLEET HAIL SNOW
-// Unit: MM IN
-// Value: 
-//////// TEMPERATURE
-// Type: temperature
-// Unit: FAHRENHEIT CELSIUS
-// Value:
-// EXAMPLES OF SERVICE AND PROVIDERS //
+}]); // EXAMPLES OF SERVICE AND PROVIDERS //
 //     // .config(["myDateIntervalConfiguredServiceProvider", function () {
 //     // NOTE: the provider name should be <<serviceName>> + "Provider"
 //     // NOTE: the provider is executed during the "congif" stage

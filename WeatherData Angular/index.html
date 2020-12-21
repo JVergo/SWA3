@@ -10,7 +10,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.js"></script>
     <!-- Importing weatherController-->
     <script src="weather.js"></script>
-
 </head>
 
 <!-- The ng-controller directive allows us to choose a controller and instantiate is 
@@ -22,18 +21,10 @@ NOTE: controllers can be generally considered as classes-->
     <input type="text" ng-model="yourName" placeholder="Enter your name...">
     <br>
     <br>
-
     <!-- {{ }} - this angular tag allows letting know angular
         that you are using an angular template tag
         NOTE: this is done automatically-->
     <p>Hello {{yourName}}, please choose what weather data you would like to view, by clicking the below buttons</p>
-    
-    <h2>Input number, followed by "Enter"</h2>
-    <input type="text" ng-model="inputedNumber" placeholder="Enter number...">
-    <button id="sendNumber">Send the number</button>
-    <br>
-    <br>
-    
     <div>
         <div>
             <form ng-submit="weatherCtrl.getAllWeatherHistory()">

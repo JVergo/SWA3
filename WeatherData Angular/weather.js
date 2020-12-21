@@ -146,13 +146,13 @@ class ImmutablePrecipitation extends ImmutableWeatherData {
         if (this.unit == 'MM') {
             return new ImmutablePrecipitation(
                 this.precipitation_type,
-                this.value != null ? (this.value / 25.4) : null,
+                this.value != null ? (this.value / 0.0393701) : null,
                 'IN',
                 this.type,
                 this.place,
                 this.time,
-                this.from != null ? (this.from / 25.4) : null,
-                this.to != null ? (this.to / 25.4) : null
+                this.from != null ? (this.from / 0.0393701) : null,
+                this.to != null ? (this.to / 0.0393701) : null
             );
         } else if (this.unit == 'IN') {
             return new ImmutablePrecipitation(
@@ -172,13 +172,13 @@ class ImmutablePrecipitation extends ImmutableWeatherData {
         if (this.unit == 'IN') {
             return new ImmutablePrecipitation(
                 this.precipitation_type,
-                this.value != null ? (this.value * 0.0393701) : null,
+                this.value != null ? (this.value / 0.0393701) : null,
                 'MM',
                 this.type,
                 this.place,
                 this.time,
-                this.from != null ? (this.from * 0.0393701) : null,
-                this.to != null ? (this.to * 0.0393701) : null
+                this.from != null ? (this.from / 0.0393701) : null,
+                this.to != null ? (this.to / 0.0393701) : null
             );
         } else if (this.unit == 'MM') {
             return new ImmutablePrecipitation(
@@ -508,14 +508,15 @@ angular.module('weatherApp', [])
             weatherHistoryService.convertToUSUnits = (immutableWeatherDataArr) => {
                 return new ImmutableWeatherHistory(
                     helperFunctionsFactory.myMap(immutableWeatherDataArr, (w) => {
-                        if (w.type == 'MS' || w.type == 'MPH')
-                            w.convertToMPH();
+                        if (w.unit == 'MS' || w.unit == 'MPH')
+                            return w.convertToMPH();
                         // else if (w.type == '%')
-                        //     w
-                        else if (w.type == 'MM' || w.type == 'IN')
-                            w.convertToInches();
-                        else if (w.type == 'CELSIUS' || w.type == 'FAHRENHEIT')
-                            w.convertToF();
+                        //     w;
+                        else if (w.unit == 'MM' || w.unit == 'IN')
+                            return w.convertToInches();
+                        else if (w.unit == 'CELSIUS' || w.unit == 'FAHRENHEIT')
+                            return w.convertToF();
+                        else return w;
                     })
                 );
             }
@@ -523,14 +524,15 @@ angular.module('weatherApp', [])
             weatherHistoryService.convertToInternationalUnits = (immutableWeatherDataArr) => {
                 return new ImmutableWeatherHistory(
                     helperFunctionsFactory.myMap(immutableWeatherDataArr, (w) => {
-                        if (w.type == 'MS' || w.type == 'MPH')
-                            w.convertToMS();
-                        // else if (w.type == '%')
-                        //     w
-                        else if (w.type == 'MM' || w.type == 'IN')
-                            w.convertToMM();
-                        else if (w.type == 'CELSIUS' || w.type == 'FAHRENHEIT')
-                            w.convertToC();
+                        if (w.unit == 'MS' || w.unit == 'MPH')
+                            return w.convertToMS();
+                        // else if (w.unit == '%')
+                        //     return w
+                        else if (w.unit == 'MM' || w.unit == 'IN')
+                            return w.convertToMM();
+                        else if (w.unit == 'CELSIUS' || w.unit == 'FAHRENHEIT')
+                            return w.convertToC();
+                        else return w
                     })
                 );
             }
@@ -598,7 +600,7 @@ angular.module('weatherApp', [])
                     w.unit == "MS" || w.unit == "MPH")
                     ? w : null
                 ).forEach(filteredElement => {
-                    if (typeof windData == 'undefined' && filteredElement.getTime() < windData.getTime())
+                    if (typeof windData == 'undefined' || filteredElement.getTime() < windData.getTime())
                         windData = filteredElement;
                 })
 
@@ -612,7 +614,7 @@ angular.module('weatherApp', [])
                     w.unit == "MM" || w.unit == "IN")
                     ? w : null
                 ).forEach(filteredElement => {
-                    if (typeof precipitationData == 'undefined' && filteredElement.getTime() < precipitationData.getTime())
+                    if (typeof precipitationData == 'undefined' || filteredElement.getTime() < precipitationData.getTime())
                         precipitationData = filteredElement;
                 })
 
@@ -626,7 +628,7 @@ angular.module('weatherApp', [])
                     w.unit == "FAHRENHEIT" || w.unit == "CELSIUS")
                     ? w : null
                 ).forEach(filteredElement => {
-                    if (typeof temperatureData == 'undefined' && filteredElement.getTime() < temperatureData.getTime())
+                    if (typeof temperatureData == 'undefined' || filteredElement.getTime() < temperatureData.getTime())
                         temperatureData = filteredElement;
                 })
 
@@ -643,7 +645,7 @@ angular.module('weatherApp', [])
                 )
                     // CALLING FOR EACH ON THE FILTERED ARRAY
                     .forEach(filteredElement => {
-                        if (typeof cloudCoverageData == 'undefined' && filteredElement.getTime() < cloudCoverageData.getTime())
+                        if (typeof cloudCoverageData == 'undefined' || filteredElement.getTime() < cloudCoverageData.getTime())
                             cloudCoverageData = filteredElement;
                     })
 
@@ -865,41 +867,8 @@ angular.module('weatherApp', [])
 
                 weatherCtrl.whFactory.pushData({ place, type, precipitation_type, direction, unit, time, value });
             }
+
         }]);
-
-
-
-
-
-
-
-
-
-
-
-
-//////// IMPORTANT MODEL CONVENTIONS
-//////// WIND
-// Type: wind speed
-// Unit: MS MPH
-// Value:
-//////// Could Coverage
-// Type: cloud coverage
-// Unit: %
-// Value:
-//      0%  - 33 % = CLEAR
-//      34% - 66 % = PARTLY CLOUDY
-//      67% - 100% = CLOUDY
-//////// PRECIPITATION
-// Type: precipitation
-// Precipitation Type: RAIN SLEET HAIL SNOW
-// Unit: MM IN
-// Value: 
-//////// TEMPERATURE
-// Type: temperature
-// Unit: FAHRENHEIT CELSIUS
-// Value:
-
 
 // EXAMPLES OF SERVICE AND PROVIDERS //
     //     // .config(["myDateIntervalConfiguredServiceProvider", function () {
